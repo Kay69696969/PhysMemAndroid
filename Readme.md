@@ -13,6 +13,12 @@ The module creates a character device (or uses an IOCTL interface) to bridge the
 
 ---
 
+#### 🔍 Implementation Details
+* **Communication**: Uses `Generic Netlink` (Family: `MY_GENL_BUS`) for efficient asynchronous data transfer.
+* **Address Translation**: Implements a full software page table walk (`PGD` to `PTE`) to resolve process-specific virtual addresses.
+* **Atomicity**: Uses `kmap_atomic` for high-speed, interrupt-safe mapping of physical pages.
+* **Access Control**: Supports both `READ_PHYS` and `WRITE_PHYS` operations via IOCTL-like commands over Netlink.
+* 
 ### 🛠️ Technical Specifications
 * **Target Architecture**: ARM64 (aarch64)
 * **Kernel Base**: Linux 5.10.x / 6.1.x (Android GKI)
