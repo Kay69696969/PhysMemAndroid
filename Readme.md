@@ -112,4 +112,4 @@ CROSS_COMPILE: Points to the Android-specific cross-compiler tool prefix.
 
 <img width="1280" height="591" alt="image" src="https://github.com/user-attachments/assets/d5af34ee-aaa0-4673-ab50-680bb4b32f93" />
 
-
+## FOR UPDATES JOIN UP : t.me/villagehooknew
