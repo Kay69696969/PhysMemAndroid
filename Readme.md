@@ -5,47 +5,43 @@ This project is a high-performance Linux kernel module (`.ko`) designed for Andr
 ---
 
 ### ⚙️ How It Works
-The module creates a character device (or utilizes an IOCTL interface) to bridge the gap between user-space and the system's physical RAM.
 
-1. **Memory Mapping**: Since the CPU uses a Virtual Memory Unit (MMU), the module uses kernel functions like `kmap_atomic` or `vmap` to map specific physical addresses into the kernel's virtual address space temporarily.
-2. **Kernel-to-User Data Transfer**: It utilizes `copy_to_user` and `copy_from_user` to safely move data between the restricted kernel memory space and your user-space application.
-3. **GKI Compliance**: The module is built against the **Android Common Kernel (ACK)**, ensuring compatibility with the strict Kernel Module Interface (KMI) introduced in Android 12 (Kernel 5.10+).
+The module creates a communication bridge using the Generic Netlink protocol to handle requests between user-space and the system's physical RAM.
 
+1. **Memory Mapping**: Since the CPU uses a Virtual Memory Unit (MMU), the module uses `kmap_atomic` to map specific physical addresses into the kernel's virtual address space temporarily.
+2. **Address Translation**: It implements a manual **Page Table Walk** (PGD -> P4D -> PUD -> PMD -> PTE) to resolve a process's virtual address to a raw physical address.
 
+3. **GKI Compliance**: Built against the **Android Common Kernel (ACK)**, ensuring compatibility with the strict Kernel Module Interface (KMI) introduced in Android 12 (Kernel 5.10+).
 
 ---
 
+#### 🔍 Implementation Details
+
+* **Communication**: Uses `Generic Netlink` (Family: `MY_GENL_BUS`) for efficient asynchronous data transfer.
+* **Atomicity**: Uses `kmap_atomic` for high-speed, interrupt-safe mapping of physical pages.
+* **Access Control**: Supports both `READ_PHYS` and `WRITE_PHYS` operations via IOCTL-like commands over Netlink.
+
 ### 🛠️ Technical Specifications
+
 * **Target Architecture**: ARM64 (aarch64)
 * **Kernel Base**: Linux 5.10.x / 6.1.x (Android GKI)
-* **Toolchain**: LLVM/Clang (as per Google's official build requirements)
+* **Toolchain**: LLVM/Clang (Official Google Toolchain as per GKI requirements)
 
 #### ✨ Key Features
+
 * **Direct Access**: Read/Write physical memory bypassing `PAGEMAP`.
 * **Efficiency**: Support for Large Pages and specialized memory offsets.
 * **Performance**: Low-latency execution for real-time memory monitoring.
 
 ---
 
-### 🏗️ Building the Module
+## 🏗️ Detailed Build Instructions
 
-Follow these steps to compile the module for your specific GKI kernel version.
+To build this kernel module, you must precisely follow these steps to ensure the `vermagic` and `KMI` match your target device.
 
-#### 1. Requirements
-* **Android NDK**: Version `r27c` or newer.
-* **Kernel Source**: Version matching your target device (e.g., `5.10.223`).
-* **Environment**: Linux (Ubuntu 22.04+ or WSL2).
+### 1. Environment & Path Setup
 
-#### 2. Compilation
-Set your NDK toolchain path and run the build command from your project directory:
+You need a Linux environment (Ubuntu 22.04 LTS or WSL2). First, install the necessary build tools:
 
 ```bash
-# Set NDK Toolchain Path
-export PATH=$HOME/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-
-# Compile
-make -C /path/to/kernel/common M=$PWD \
-    ARCH=arm64 \
-    LLVM=1 LLVM_IAS=1 \
-    CROSS_COMPILE=aarch64-linux-android- \
-    modules
+sudo apt update && sudo apt install -y build-essential bc flex bison libssl-dev libelf-dev
