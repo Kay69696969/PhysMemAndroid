@@ -107,4 +107,4 @@ CLANG_TRIPLE: Specifies the target triple for the Clang compiler.
 CROSS_COMPILE: Points to the Android-specific cross-compiler tool prefix.
 ```
     
-
+## Tested in games: Call Of Duty Mobile Free Fire and Standoff2
