@@ -107,4 +107,9 @@ CLANG_TRIPLE: Specifies the target triple for the Clang compiler.
 
 CROSS_COMPILE: Points to the Android-specific cross-compiler tool prefix.
 ```
-    
+## SOME IN GAME PICS
+<img width="1280" height="591" alt="image" src="https://github.com/user-attachments/assets/5e2995e9-7ee9-45fe-bb01-0c6989b0c1cf" />
+
+<img width="1280" height="591" alt="image" src="https://github.com/user-attachments/assets/d5af34ee-aaa0-4673-ab50-680bb4b32f93" />
+
+
