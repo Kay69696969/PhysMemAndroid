@@ -45,3 +45,66 @@ You need a Linux environment (Ubuntu 22.04 LTS or WSL2). First, install the nece
 
 ```bash
 sudo apt update && sudo apt install -y build-essential bc flex bison libssl-dev libelf-dev
+```
+## Setup NDK (Clang):
+Download **NDK r27c** (or the version matching your project) and add the toolchain to your system's PATH. This is required for the `make` command to locate the Clang compiler and associated tools.
+
+```bash
+# Replace with your actual NDK extraction path
+export PATH=$HOME/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+```
+
+## Prepare Kernel Source:
+The module must be compiled against the **Android Common Kernel (ACK)** source that matches your device's version exactly.
+
+```bash
+mkdir android_kernel && cd android_kernel
+git clone [https://android.googlesource.com/kernel/common](https://android.googlesource.com/kernel/common) -b android12-5.10
+cd common
+# Check your phone's 'uname -r' and checkout the matching tag
+git checkout v5.10.223
+```
+
+## Handle Version Suffix:
+Check `adb shell uname -r` on your device. If it contains a suffix like `-android12-9-g...`, you must edit the kernel `Makefile` to match it.
+
+```bash
+# Locate EXTRAVERSION at the top and set it accordingly:
+# EXTRAVERSION = -android12-9
+nano Makefile
+```
+## Initialize Configuration:
+Before building the module, you must prepare the kernel headers and configuration:
+```bash
+# 1. Load GKI default configuration
+make ARCH=arm64 LLVM=1 LLVM_IAS=1 CROSS_COMPILE=aarch64-linux-android- gki_defconfig
+
+# 2. Prepare symbols and headers for module compilation
+make ARCH=arm64 LLVM=1 LLVM_IAS=1 CROSS_COMPILE=aarch64-linux-android- modules_prepare
+```
+
+## Build the Module:
+```bash
+make -C ~/android_kernel/common M=$PWD \
+    ARCH=arm64 \
+    LLVM=1 LLVM_IAS=1 \
+    CLANG_TRIPLE=aarch64-linux-gnu- \
+    CROSS_COMPILE=aarch64-linux-android- \
+    modules
+```
+## Command Parameters Breakdown:
+```bash
+-C [path]: Tells make to change to the kernel source directory to use its root Makefile.
+
+M=$PWD: Informs the build system that the external module is located in the current directory.
+
+ARCH=arm64: Sets the target architecture to 64-bit ARM.
+
+LLVM=1 LLVM_IAS=1: Forces the use of Clang and the Integrated Assembler (required for GKI).
+
+CLANG_TRIPLE: Specifies the target triple for the Clang compiler.
+
+CROSS_COMPILE: Points to the Android-specific cross-compiler tool prefix.
+```
+    
+
