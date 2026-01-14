@@ -117,4 +117,4 @@ CROSS_COMPILE: Points to the Android-specific cross-compiler tool prefix.
 ## FOR UPDATES JOIN UP : t.me/villagehooknew
 <img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/78a92b28-d40b-4dbb-bb53-7cc9d0f21f90" />
 
-## DEVELOPER : Paranoia
+## DEVELOPER : Paranoia(me)
