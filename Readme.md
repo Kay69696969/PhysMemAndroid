@@ -1,11 +1,11 @@
-# 🛰️ Android Physical Memory Read/Write Kernel Module (GKI)
+#  Android Physical Memory Read/Write Kernel Module (GKI)
 
 This project is a high-performance Linux kernel module (`.ko`) designed for Android devices running **GKI (Generic Kernel Image)**. It provides a specialized interface to perform direct physical memory operations, bypassing standard virtual memory restrictions for debugging, research, and memory analysis purposes.
 
 ---
 ## Tested in games: Call Of Duty Mobile, Free Fire, Standoff2
 
-### ⚙️ How It Works
+###  How It Works
 
 The module creates a communication bridge using the Generic Netlink protocol to handle requests between user-space and the system's physical RAM.
 
@@ -16,19 +16,19 @@ The module creates a communication bridge using the Generic Netlink protocol to 
 
 ---
 
-#### 🔍 Implementation Details
+####  Implementation Details
 
 * **Communication**: Uses `Generic Netlink` (Family: `MY_GENL_BUS`) for efficient asynchronous data transfer.
 * **Atomicity**: Uses `kmap_atomic` for high-speed, interrupt-safe mapping of physical pages.
 * **Access Control**: Supports both `READ_PHYS` and `WRITE_PHYS` operations via IOCTL-like commands over Netlink.
 
-### 🛠️ Technical Specifications
+###  Technical Specifications
 
 * **Target Architecture**: ARM64 (aarch64)
 * **Kernel Base**: Linux 5.10.x / 6.1.x (Android GKI)
 * **Toolchain**: LLVM/Clang (Official Google Toolchain as per GKI requirements)
 
-#### ✨ Key Features
+#### Key Features
 
 * **Direct Access**: Read/Write physical memory bypassing `PAGEMAP`.
 * **Efficiency**: Support for Large Pages and specialized memory offsets.
