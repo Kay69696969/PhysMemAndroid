@@ -36,7 +36,7 @@ The module creates a communication bridge using the Generic Netlink protocol to 
 
 ---
 
-## 🏗️ Detailed Build Instructions
+##  Detailed Build Instructions
 
 To build this kernel module, you must precisely follow these steps to ensure the `vermagic` and `KMI` match your target device.
 
