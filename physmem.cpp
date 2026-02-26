@@ -57,7 +57,7 @@ int get_family_id(int fd, const char* name) {
 
 namespace physmem {
 
-    // --- Process Helpers (Fixed the Undefined Symbols) ---
+    // --- Process Helpers  ---
 
     int get_pid(const char* package_name) {
         DIR* dir = opendir("/proc");
@@ -153,4 +153,5 @@ namespace physmem {
         memcpy(req.p.data.buffer, buf, sz);
         return send(nl_fd, &req, sizeof(req), 0) > 0;
     }
+
 }
