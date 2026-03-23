@@ -3,7 +3,7 @@
 This project is a high-performance Linux kernel module (`.ko`) designed for Android devices running **GKI (Generic Kernel Image)**. It provides a specialized interface to perform direct physical memory operations, bypassing standard virtual memory restrictions for debugging, research, and memory analysis purposes.
 
 ---
-## Tested in games: Call Of Duty Mobile, Free Fire, Standoff2
+## Tested in games: Call Of Duty Mobile, Free Fire, Standoff2, Delta Force, Critical ops
 
 ###  How It Works
 
